@@ -1,0 +1,111 @@
+---
+layout: default
+---
+
+<div class="flex flex-col lg:flex-row gap-8">
+
+  <!-- Main Article -->
+  <article class="flex-1 min-w-0">
+
+    <!-- Article Header -->
+    <header class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-6">
+      <div class="flex flex-wrap gap-2 mb-4">
+        {% for tag in page.tags %}
+        <span class="bg-rose-100 text-rose-600 text-xs font-medium px-3 py-1 rounded-full">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      <h1 class="font-bold text-2xl md:text-3xl text-gray-900 leading-tight mb-4">{{ page.title }}</h1>
+      <div class="flex items-center gap-4 text-sm text-gray-400">
+        <time>{{ page.date | date: "%Y年%m月%d日" }}</time>
+        <span>{{ page.categories }}</span>
+      </div>
+      {% if page.image %}
+      <img src="{{ page.image }}" alt="{{ page.title }}" class="w-full rounded-xl mt-6 object-cover max-h-80">
+      {% endif %}
+    </header>
+
+    <!-- In-Article Top Ad -->
+    <div class="mb-6">
+      <ins class="adsbygoogle block"
+           data-ad-client="ca-pub-6743751614716161"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Article Body -->
+    <div class="bg-white rounded-xl shadow-md p-6 md:p-8 prose prose-rose max-w-none
+                prose-headings:text-rose-700 prose-headings:font-bold
+                prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4
+                prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
+                prose-li:text-gray-700 prose-li:mb-1
+                prose-strong:text-rose-700
+                prose-a:text-rose-500 prose-a:no-underline hover:prose-a:underline">
+      {{ content }}
+    </div>
+
+    <!-- In-Article Bottom Ad -->
+    <div class="mt-6">
+      <ins class="adsbygoogle block"
+           data-ad-client="ca-pub-6743751614716161"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Post Navigation -->
+    <nav class="flex justify-between mt-6 gap-4">
+      {% if page.previous %}
+      <a href="{{ page.previous.url | relative_url }}"
+         class="flex-1 bg-white rounded-xl shadow p-4 hover:shadow-md transition text-left">
+        <span class="text-xs text-gray-400 block mb-1">← 前の記事</span>
+        <span class="text-sm font-medium text-gray-700 line-clamp-2">{{ page.previous.title }}</span>
+      </a>
+      {% else %}<div class="flex-1"></div>{% endif %}
+
+      {% if page.next %}
+      <a href="{{ page.next.url | relative_url }}"
+         class="flex-1 bg-white rounded-xl shadow p-4 hover:shadow-md transition text-right">
+        <span class="text-xs text-gray-400 block mb-1">次の記事 →</span>
+        <span class="text-sm font-medium text-gray-700 line-clamp-2">{{ page.next.title }}</span>
+      </a>
+      {% else %}<div class="flex-1"></div>{% endif %}
+    </nav>
+
+  </article>
+
+  <!-- Sidebar -->
+  <aside class="lg:w-72 shrink-0">
+
+    <!-- Sidebar Ad -->
+    <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+      <p class="text-xs text-gray-400 text-center mb-2">スポンサー</p>
+      <ins class="adsbygoogle block"
+           data-ad-client="ca-pub-6743751614716161"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Recent Posts -->
+    <div class="bg-white rounded-xl shadow-md p-5">
+      <h3 class="font-bold text-rose-700 mb-4 text-sm uppercase tracking-wide">最近の記事</h3>
+      <ul class="space-y-3">
+        {% for post in site.posts limit:5 %}
+        <li>
+          <a href="{{ post.url | relative_url }}"
+             class="text-sm text-gray-700 hover:text-rose-600 transition line-clamp-2 leading-snug">
+            {{ post.title }}
+          </a>
+          <time class="text-xs text-gray-400 mt-0.5 block">{{ post.date | date: "%m月%d日" }}</time>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </aside>
+
+</div>

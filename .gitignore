@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+.codex/

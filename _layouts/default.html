@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            rose: {
+              50: '#fff1f2', 100: '#ffe4e6', 200: '#fecdd3',
+              300: '#fda4af', 400: '#fb7185', 500: '#f43f5e',
+              600: '#e11d48', 700: '#be123c', 800: '#9f1239', 900: '#881337',
+            },
+          },
+        },
+      },
+    }
+  </script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6743751614716161" crossorigin="anonymous"></script>
+
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .ad-unit { min-height: 90px; background: #f9f9f9; }
+  </style>
+</head>
+<body class="bg-rose-50 text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b-4 border-rose-400">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="{{ '/' | relative_url }}" class="font-serif text-3xl text-rose-600 tracking-wide hover:text-rose-700 transition">
+        {{ site.title }}
+      </a>
+      <nav class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
+        <a href="{{ '/' | relative_url }}" class="hover:text-rose-500 transition">ホーム</a>
+        <a href="{{ '/lifestyle' | relative_url }}" class="hover:text-rose-500 transition">ライフスタイル</a>
+        <a href="{{ '/beauty' | relative_url }}" class="hover:text-rose-500 transition">美容</a>
+        <a href="{{ '/recipe' | relative_url }}" class="hover:text-rose-500 transition">レシピ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Top Banner Ad -->
+  <div class="max-w-5xl mx-auto px-4 pt-4">
+    <ins class="adsbygoogle ad-unit block"
+         data-ad-client="ca-pub-6743751614716161"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    {{ content }}
+  </main>
+
+  <!-- Footer Ad -->
+  <div class="max-w-5xl mx-auto px-4 pb-4">
+    <ins class="adsbygoogle ad-unit block"
+         data-ad-client="ca-pub-6743751614716161"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-rose-700 text-white mt-12">
+    <div class="max-w-5xl mx-auto px-4 py-8 text-center">
+      <p class="font-serif text-2xl mb-2">{{ site.title }}</p>
+      <p class="text-rose-200 text-sm">{{ site.description }}</p>
+      <p class="text-rose-300 text-xs mt-4">&copy; {{ 'now' | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

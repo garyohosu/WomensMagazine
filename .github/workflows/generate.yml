@@ -1,0 +1,66 @@
+name: Generate Daily Articles
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 毎日UTC 0時
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex
+
+      # ChatGPT Plus の OAuth トークンを復元（API キー不要・定額プラン）
+      # セットアップ方法:
+      #   1. ローカルで `codex auth` を実行してログイン
+      #   2. `cat ~/.codex/auth.json` の内容をコピー
+      #   3. GitHub リポジトリの Settings > Secrets > CODEX_AUTH_TOKEN に貼り付け
+      - name: Restore Codex auth (ChatGPT Plus)
+        run: |
+          mkdir -p ~/.codex
+          echo '${{ secrets.CODEX_AUTH_TOKEN }}' > ~/.codex/auth.json
+
+      - name: Generate articles
+        run: |
+          cd scripts
+          python generate_daily.py
+
+      - name: Install Jekyll
+        run: |
+          gem install jekyll -v "~> 4.3"
+          gem install jekyll-paginate -v "~> 1.1"
+
+      - name: Build site (sanity check)
+        run: jekyll build
+
+      - name: Commit and push articles
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add _posts/
+          git diff --cached --quiet || git commit -m "Add articles for $(date -u +%Y-%m-%d)"
+          git push

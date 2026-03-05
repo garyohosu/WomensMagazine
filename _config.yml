@@ -1,0 +1,24 @@
+title: WomensMagazine
+description: 毎日の暮らしをもっと豊かに。節約・料理・美容・健康など女性のリアルな生活情報をお届けします。
+url: ""
+baseurl: ""
+
+# Pagination
+plugins:
+  - jekyll-paginate
+paginate: 10
+paginate_path: "/page:num/"
+
+# Build
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+
+# Exclude from build
+exclude:
+  - scripts/
+  - requirements.txt
+  - SPEC.md
+  - README.md
+  - .github/
+  - "*.py"
