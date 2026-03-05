@@ -45,6 +45,19 @@ layout: default
       {{ content }}
     </div>
 
+    <!-- Amazon Associate Box -->
+    {% if site.amazon_tracking_id %}
+    <section class="mt-6 bg-rose-50 border border-rose-100 rounded-xl p-5">
+      <p class="text-xs text-gray-500 mb-2">※この記事にはアフィリエイトリンク（Amazonアソシエイト）を含みます。</p>
+      <h3 class="text-sm font-bold text-rose-700 mb-2">この記事で紹介しているテーマの商品を探す</h3>
+      <a
+        href="https://www.amazon.co.jp/s?k={{ page.amazon_keyword | default: page.title | uri_escape }}&tag={{ site.amazon_tracking_id }}"
+        target="_blank" rel="nofollow sponsored noopener"
+        class="inline-block bg-rose-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-rose-600 transition"
+      >Amazonで関連商品を見る</a>
+    </section>
+    {% endif %}
+
     <!-- In-Article Bottom Ad -->
     <div class="mt-6">
       <ins class="adsbygoogle block"

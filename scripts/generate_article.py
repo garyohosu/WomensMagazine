@@ -38,6 +38,7 @@ def generate_article(topic):
         f"date: {today}\n"
         "categories: lifestyle\n"
         "tags: [生活, 女性, おすすめ]\n"
+        f"amazon_keyword: {safe_topic}\n"
         "layout: post\n"
         "---\n\n"
         "front matterの直後から記事本文をMarkdown形式で書いてください。"

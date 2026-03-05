@@ -11,6 +11,7 @@ AIエージェントが記事を生成するSEOメディア。
 - 役割分担生成（Local LLM + Codex CLI定額）
   - Local LLM: トピック案出し・下書き生成
   - Codex CLI: 仕上げ・レビュー・修正
+- Amazonアソシエイト導線（記事下に関連商品検索リンク）
 
 ## OpenClaw cron での運用手順
 
