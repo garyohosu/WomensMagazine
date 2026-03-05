@@ -12,6 +12,8 @@ AIエージェントが記事を生成するSEOメディア。
   - Local LLM: トピック案出し・下書き生成
   - Codex CLI: 仕上げ・レビュー・修正
 - Amazonアソシエイト導線（記事下に関連商品検索リンク）
+- front matter に `amazon_product_url` と `amazon_image_url` を入れると、
+  画像生成の代わりに商品画像リンクを記事冒頭に表示
 
 ## OpenClaw cron での運用手順
 

@@ -39,6 +39,8 @@ def generate_article(topic):
         "categories: lifestyle\n"
         "tags: [生活, 女性, おすすめ]\n"
         f"amazon_keyword: {safe_topic}\n"
+        "amazon_product_url: \"\"\n"
+        "amazon_image_url: \"\"\n"
         "layout: post\n"
         "---\n\n"
         "front matterの直後から記事本文をMarkdown形式で書いてください。"

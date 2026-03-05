@@ -56,6 +56,15 @@ def generate_image(topic):
     return f"/assets/covers/{filename}"
 
 
+def _front_matter_value(lines, key: str, fm_end: int) -> str:
+    for l in lines[:fm_end]:
+        s = l.strip()
+        if s.startswith(f"{key}:"):
+            v = s.split(":", 1)[1].strip().strip('"').strip("'")
+            return v
+    return ""
+
+
 def insert_image_into_article(article, image_url):
     """front matterにimage URLを追加し、記事先頭に画像を挿入する。"""
     lines = article.split("\n")
@@ -74,16 +83,25 @@ def insert_image_into_article(article, image_url):
     if fm_end == -1:
         return f"![記事画像]({image_url})\n\n{article}"
 
+    amazon_product_url = _front_matter_value(lines, "amazon_product_url", fm_end)
+    amazon_image_url = _front_matter_value(lines, "amazon_image_url", fm_end)
+
+    # Prefer product-linked image when Amazon item URL + image URL are provided
+    if amazon_product_url and amazon_image_url:
+        display_image = amazon_image_url
+        link_marker = f"[![紹介商品]({display_image})]({amazon_product_url})"
+    else:
+        display_image = image_url
+        link_marker = f"![記事画像]({display_image})"
+
     has_image = any(l.strip().startswith("image:") for l in lines[:fm_end])
     if not has_image:
-        lines.insert(fm_end, f"image: {image_url}")
+        lines.insert(fm_end, f"image: {display_image}")
         fm_end += 1
 
-    # Insert visual preview right after front matter if missing
     body_start = fm_end + 1
     if body_start < len(lines):
-        marker = f"![記事画像]({image_url})"
-        if marker not in "\n".join(lines[body_start:body_start + 5]):
-            lines.insert(body_start + 1, f"\n{marker}\n")
+        if link_marker not in "\n".join(lines[body_start:body_start + 6]):
+            lines.insert(body_start + 1, f"\n{link_marker}\n")
 
     return "\n".join(lines)
