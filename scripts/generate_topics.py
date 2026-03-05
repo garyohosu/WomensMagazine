@@ -1,5 +1,5 @@
 from datetime import date
-from codex_client import ask_codex
+from local_llm_client import ask_local_llm
 from json_utils import extract_json_value
 
 
@@ -19,7 +19,7 @@ def generate_topics(n=10):
         '例: ["トピック1", "トピック2"]'
     )
 
-    raw = ask_codex(prompt)
+    raw = ask_local_llm(prompt, purpose="topic")
     topics = extract_json_value(raw, list)
 
     normalized_topics = [str(topic).strip() for topic in topics if str(topic).strip()]

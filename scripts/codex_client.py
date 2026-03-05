@@ -1,49 +1,36 @@
-"""
-Codex CLI wrapper for text generation.
-ChatGPT Plus の定額プランで動作。API キー不要。
-認証は `codex auth` でログイン済みの ~/.codex/auth.json を使う。
-"""
+"""Codex CLI wrapper (flat-rate OAuth session, no API key)."""
+import json
 import subprocess
-import tempfile
-import os
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
 
 
-def ask_codex(prompt: str, timeout: int = 300) -> str:
-    """
-    Codex CLI でテキストを生成して返す。
-    Codex にファイルへ書き込ませ、そのファイルを読み返す方式で
-    クリーンなテキスト出力を取得する。
-    API キーは不要（ChatGPT Plus の OAuth トークンを使用）。
-    """
-    with tempfile.TemporaryDirectory() as tmpdir:
-        output_file = os.path.join(tmpdir, "output.txt")
+def _load_timeout(default: int = 600) -> int:
+    cfg_path = ROOT / "data/config.json"
+    if not cfg_path.exists():
+        return default
+    try:
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+        return int(cfg.get("codex", {}).get("timeout", default))
+    except Exception:
+        return default
 
-        task = (
-            f"{prompt}\n\n"
-            f"Write your complete response to this file: {output_file}\n"
-            "Output ONLY the requested content to that file. No extra commentary."
+
+def ask_codex(prompt: str, timeout: int = None) -> str:
+    timeout = timeout or _load_timeout(600)
+    result = subprocess.run(
+        ["codex", "exec", prompt],
+        timeout=timeout,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(
+            "Codex CLI failed. Check `codex` login/session.\n"
+            f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
         )
-
-        # OPENAI_API_KEY を環境から除外して実行（定額プランの OAuth 認証を使う）
-        env = {k: v for k, v in os.environ.items() if k != "OPENAI_API_KEY"}
-
-        result = subprocess.run(
-            ["codex", "--approval-mode", "full-auto", "-q", task],
-            cwd=tmpdir,
-            timeout=timeout,
-            env=env,
-            capture_output=True,
-            text=True,
-        )
-
-        if result.returncode != 0:
-            raise RuntimeError(
-                "Codex CLI が失敗しました。`codex auth` でログインしているか確認してください。\n"
-                f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-            )
-
-        if not os.path.exists(output_file):
-            raise RuntimeError("Codex CLI は正常終了しましたが、output.txt が生成されませんでした。")
-
-        with open(output_file, "r", encoding="utf-8") as f:
-            return f.read().strip()
+    out = (result.stdout or "").strip()
+    if not out:
+        raise RuntimeError("Codex CLI returned empty output")
+    return out

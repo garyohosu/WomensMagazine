@@ -1,3 +1,3 @@
-# No Python packages required.
-# AI generation uses Codex CLI (npm install -g @openai/codex)
-# Requires: Node.js + ChatGPT Plus account
+requests>=2.31.0
+# AI generation uses Codex CLI (flat-rate OAuth) + Local LLM (Ollama)
+# Requires: Node.js + codex login + Ollama endpoint

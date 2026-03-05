@@ -41,14 +41,17 @@
     .ad-unit { min-height: 90px; background: #f9f9f9; }
   </style>
 </head>
-<body class="bg-rose-50 text-gray-800">
+<body class="bg-[#fff7fb] text-gray-800">
 
   <!-- Header -->
-  <header class="bg-white shadow-sm border-b-4 border-rose-400">
+  <header class="bg-white shadow-sm border-b-4 border-pink-500">
     <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="{{ '/' | relative_url }}" class="font-serif text-3xl text-rose-600 tracking-wide hover:text-rose-700 transition">
-        {{ site.title }}
-      </a>
+      <div>
+        <p class="text-[11px] tracking-[0.2em] text-pink-500 font-semibold">WOMEN'S WEEKLY STYLE</p>
+        <a href="{{ '/' | relative_url }}" class="font-serif text-3xl text-rose-600 tracking-wide hover:text-rose-700 transition">
+          {{ site.title }}
+        </a>
+      </div>
       <nav class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
         <a href="{{ '/' | relative_url }}" class="hover:text-rose-500 transition">ホーム</a>
         <a href="{{ '/lifestyle' | relative_url }}" class="hover:text-rose-500 transition">ライフスタイル</a>

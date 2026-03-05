@@ -1,5 +1,6 @@
 from datetime import date
 from codex_client import ask_codex
+from local_llm_client import ask_local_llm
 
 
 def yaml_double_quote(value: str) -> str:
@@ -42,4 +43,24 @@ def generate_article(topic):
         "front matterの直後から記事本文をMarkdown形式で書いてください。"
     )
 
-    return ask_codex(prompt)
+    # 1) Local LLM generates a rich draft quickly (with retry/fallback in client)
+    try:
+        draft = ask_local_llm(prompt, purpose="draft")
+    except Exception:
+        # fallback: Codex only path (still flat-rate)
+        draft = ask_codex(prompt)
+
+    # 2) Codex CLI polishes structure/facts/tone for publish quality
+    polish_prompt = (
+        "次の下書きを、女性週刊誌風の読みやすい記事に整えてください。\n"
+        "要件:\n"
+        "- front matterは維持\n"
+        "- ですます調\n"
+        "- 見出しの流れを滑らかに\n"
+        "- 冗長表現を削る\n"
+        "- 箇条書きは読みやすく\n"
+        "- 1500〜2200字を目安\n"
+        "改善後の本文のみ返してください。\n\n"
+        f"{draft}"
+    )
+    return ask_codex(polish_prompt)
