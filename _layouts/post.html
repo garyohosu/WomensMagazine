@@ -8,25 +8,46 @@ layout: default
   <article class="flex-1 min-w-0">
 
     <!-- Article Header -->
-    <header class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-6">
-      <div class="flex flex-wrap gap-2 mb-4">
+    <header class="bg-white rounded-[2.5rem] shadow-xl shadow-brand-100/50 border border-brand-50 p-8 md:p-14 mb-10 relative overflow-hidden transform transition-all hover:shadow-2xl hover:shadow-brand-200/40" 
+            data-aos="fade-up" data-aos-duration="1000">
+      <div class="absolute top-0 right-0 p-8 opacity-5 select-none pointer-events-none" data-aos="fade-left" data-aos-delay="500">
+        <span class="font-serif text-[12rem] leading-none text-brand-900">"</span>
+      </div>
+      
+      <div class="flex flex-wrap gap-3 mb-8" data-aos="fade-up" data-aos-delay="200">
         {% for tag in page.tags %}
-        <span class="bg-rose-100 text-rose-600 text-xs font-medium px-3 py-1 rounded-full">{{ tag }}</span>
+        <span class="bg-brand-50 text-brand-600 text-[10px] font-bold tracking-widest px-4 py-1.5 rounded-full uppercase border border-brand-100 shadow-sm hover:shadow-md hover:bg-white hover:text-brand-500 transition-all duration-300 cursor-default">{{ tag }}</span>
         {% endfor %}
       </div>
-      <h1 class="font-bold text-2xl md:text-3xl text-gray-900 leading-tight mb-4">{{ page.title }}</h1>
-      <div class="flex items-center gap-4 text-sm text-gray-400">
-        <time>{{ page.date | date: "%Y年%m月%d日" }}</time>
-        <span>{{ page.categories }}</span>
+      
+      <h1 class="font-serif font-bold text-3xl md:text-5xl text-gray-900 leading-[1.3] mb-8 tracking-tight" 
+          data-aos="fade-up" data-aos-delay="300">
+        {{ page.title }}
+      </h1>
+      
+      <div class="flex items-center gap-8 text-[12px] text-gray-400 font-bold tracking-widest border-t border-brand-50 pt-8" 
+           data-aos="fade-up" data-aos-delay="400">
+        <div class="flex items-center gap-2 group">
+          <span class="text-brand-300 group-hover:text-brand-500 transition-colors">📅</span>
+          <time>{{ page.date | date: "%Y.%m.%d" }}</time>
+        </div>
+        <div class="flex items-center gap-2 uppercase group">
+          <span class="text-brand-300 group-hover:text-brand-500 transition-colors">🏷️</span>
+          <span class="text-brand-400 group-hover:text-brand-600 transition-colors">{{ page.categories }}</span>
+        </div>
       </div>
+      
       {% if page.image %}
-      <img src="{{ page.image }}" alt="{{ page.title }}" class="w-full rounded-xl mt-6 object-cover max-h-80">
+      <div class="mt-12 -mx-8 md:-mx-14 relative group overflow-hidden" data-aos="zoom-in" data-aos-delay="500">
+        <div class="absolute inset-0 bg-brand-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+        <img src="{{ page.image }}" alt="{{ page.title }}" class="w-full object-cover max-h-[550px] transform transition-transform duration-[2s] ease-out group-hover:scale-105">
+      </div>
       {% endif %}
     </header>
 
     <!-- In-Article Top Ad -->
-    <div class="mb-6">
-      <ins class="adsbygoogle block"
+    <div class="mb-10 overflow-hidden rounded-2xl shadow-sm" data-aos="fade-up">
+      <ins class="adsbygoogle block ad-unit"
            data-ad-client="ca-pub-6743751614716161"
            data-ad-slot="auto"
            data-ad-format="auto"
@@ -35,33 +56,60 @@ layout: default
     </div>
 
     <!-- Article Body -->
-    <div class="bg-white rounded-xl shadow-md p-6 md:p-8 prose prose-lg prose-rose max-w-none
-                prose-headings:text-rose-700 prose-headings:font-bold
-                prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-5 prose-h2:pb-2 prose-h2:border-b prose-h2:border-rose-100
-                prose-p:text-gray-700 prose-p:leading-[1.95] prose-p:mb-5
-                prose-li:text-gray-700 prose-li:mb-2 prose-li:leading-relaxed
-                prose-ul:my-5 prose-ol:my-5
-                prose-strong:text-rose-700
-                prose-a:text-rose-500 prose-a:no-underline hover:prose-a:underline">
+    <div class="bg-white rounded-[2.5rem] shadow-xl shadow-brand-100/30 border border-brand-50 p-8 md:p-14 mb-12
+                prose prose-lg prose-brand max-w-none
+                prose-headings:font-serif prose-headings:font-bold prose-headings:tracking-tight
+                prose-h2:text-3xl prose-h2:mt-20 prose-h2:mb-10 prose-h2:magazine-heading prose-h2:text-brand-900
+                prose-h3:text-xl prose-h3:mt-14 prose-h3:mb-6 prose-h3:text-brand-700 prose-h3:flex prose-h3:items-center prose-h3:gap-3
+                prose-p:text-gray-600 prose-p:leading-[2.4] prose-p:mb-8 prose-p:text-justify prose-p:font-light
+                prose-li:text-gray-600 prose-li:mb-4 prose-li:leading-[2]
+                prose-ul:my-10 prose-ol:my-10
+                prose-strong:text-brand-800 prose-strong:font-bold prose-strong:bg-gradient-to-r prose-strong:from-brand-50 prose-strong:to-transparent prose-strong:px-2 prose-strong:py-0.5 prose-strong:rounded
+                prose-blockquote:border-l-4 prose-blockquote:border-brand-300 prose-blockquote:bg-brand-50/30 prose-blockquote:py-6 prose-blockquote:px-8 prose-blockquote:rounded-r-2xl prose-blockquote:text-brand-800 prose-blockquote:font-serif prose-blockquote:italic
+                prose-img:rounded-[1.5rem] prose-img:shadow-xl prose-img:my-12 prose-img:transform prose-img:hover:scale-[1.01] prose-img:transition-transform prose-img:duration-500
+                prose-a:text-brand-600 prose-a:font-bold prose-a:no-underline prose-a:border-b-2 prose-a:border-brand-200 hover:prose-a:border-brand-500 prose-a:transition-colors"
+         data-aos="fade-up">
       {{ content }}
     </div>
 
     <!-- Amazon Associate Box -->
     {% if site.amazon_tracking_id %}
-    <section class="mt-6 bg-rose-50 border border-rose-100 rounded-xl p-5">
-      <p class="text-xs text-gray-500 mb-2">※この記事にはアフィリエイトリンク（Amazonアソシエイト）を含みます。</p>
-      <h3 class="text-sm font-bold text-rose-700 mb-2">この記事で紹介しているテーマの商品を探す</h3>
-      <a
-        href="https://www.amazon.co.jp/s?k={{ page.amazon_keyword | default: page.title | uri_escape }}&tag={{ site.amazon_tracking_id }}"
-        target="_blank" rel="nofollow sponsored noopener"
-        class="inline-block bg-rose-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-rose-600 transition"
-      >Amazonで関連商品を見る</a>
+    <section class="mb-12 bg-gradient-to-br from-brand-50 to-white border border-brand-100 rounded-[2.5rem] p-10 md:p-12 flex flex-col md:flex-row items-center gap-10 shadow-lg relative overflow-hidden group"
+             data-aos="fade-up">
+      <!-- Decor -->
+      <div class="absolute top-0 right-0 w-32 h-32 bg-brand-100 rounded-full blur-3xl opacity-50 -mr-10 -mt-10 animate-pulse"></div>
+      
+      <div class="flex-1 relative z-10">
+        <p class="text-[10px] text-brand-400 font-bold tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
+          <span class="w-6 h-px bg-brand-400"></span> Recommendation
+        </p>
+        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-5 leading-snug">
+          この記事で紹介しているテーマの<br>おすすめ商品をAmazonでチェック
+        </h3>
+        <p class="text-xs text-gray-500 mb-8 leading-relaxed">※この記事にはアフィリエイトリンクを含みます。売上の一部は当サイトの運営費として活用させていただきます。</p>
+        <a
+          href="https://www.amazon.co.jp/s?k={{ page.amazon_keyword | default: page.title | uri_escape }}&tag={{ site.amazon_tracking_id }}"
+          target="_blank" rel="nofollow sponsored noopener"
+          class="inline-flex items-center gap-3 bg-brand-600 text-white text-sm font-bold px-10 py-4 rounded-full hover:bg-brand-700 hover:shadow-lg hover:shadow-brand-300/50 hover:-translate-y-1 transition-all duration-300"
+        >
+          Amazonで関連商品を見る
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+      {% if page.amazon_image_url %}
+      <div class="shrink-0 relative z-10">
+        <div class="absolute inset-0 bg-brand-200 blur-xl opacity-30 transform scale-90"></div>
+        <img src="{{ page.amazon_image_url }}" alt="Recommended Item" class="relative w-48 h-48 object-contain bg-white rounded-3xl p-6 shadow-xl border border-brand-50 transform group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
+      </div>
+      {% endif %}
     </section>
     {% endif %}
 
     <!-- In-Article Bottom Ad -->
-    <div class="mt-6">
-      <ins class="adsbygoogle block"
+    <div class="mt-8" data-aos="fade-up">
+      <ins class="adsbygoogle block ad-unit rounded-2xl overflow-hidden"
            data-ad-client="ca-pub-6743751614716161"
            data-ad-slot="auto"
            data-ad-format="auto"
@@ -70,20 +118,24 @@ layout: default
     </div>
 
     <!-- Post Navigation -->
-    <nav class="flex justify-between mt-6 gap-4">
+    <nav class="flex flex-col md:flex-row justify-between mt-16 gap-8">
       {% if page.previous %}
       <a href="{{ page.previous.url | relative_url }}"
-         class="flex-1 bg-white rounded-xl shadow p-4 hover:shadow-md transition text-left">
-        <span class="text-xs text-gray-400 block mb-1">← 前の記事</span>
-        <span class="text-sm font-medium text-gray-700 line-clamp-2">{{ page.previous.title }}</span>
+         class="flex-1 bg-white rounded-[2rem] shadow-sm border border-brand-50 p-8 hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 text-left group relative overflow-hidden"
+         data-aos="fade-right" data-aos-delay="100">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-brand-50 rounded-full -mr-12 -mt-12 transition-transform duration-500 group-hover:scale-150"></div>
+        <span class="relative z-10 text-[10px] text-brand-300 font-bold uppercase tracking-widest block mb-3 group-hover:text-brand-500 transition-colors">← Previous Article</span>
+        <span class="relative z-10 font-serif text-lg font-bold text-gray-700 line-clamp-2 leading-snug group-hover:text-brand-800 transition-colors">{{ page.previous.title }}</span>
       </a>
       {% else %}<div class="flex-1"></div>{% endif %}
 
       {% if page.next %}
       <a href="{{ page.next.url | relative_url }}"
-         class="flex-1 bg-white rounded-xl shadow p-4 hover:shadow-md transition text-right">
-        <span class="text-xs text-gray-400 block mb-1">次の記事 →</span>
-        <span class="text-sm font-medium text-gray-700 line-clamp-2">{{ page.next.title }}</span>
+         class="flex-1 bg-white rounded-[2rem] shadow-sm border border-brand-50 p-8 hover:shadow-xl hover:shadow-brand-100/50 hover:-translate-y-1 transition-all duration-300 text-right group relative overflow-hidden"
+         data-aos="fade-left" data-aos-delay="100">
+        <div class="absolute top-0 left-0 w-24 h-24 bg-brand-50 rounded-full -ml-12 -mt-12 transition-transform duration-500 group-hover:scale-150"></div>
+        <span class="relative z-10 text-[10px] text-brand-300 font-bold uppercase tracking-widest block mb-3 group-hover:text-brand-500 transition-colors">Next Article →</span>
+        <span class="relative z-10 font-serif text-lg font-bold text-gray-700 line-clamp-2 leading-snug group-hover:text-brand-800 transition-colors">{{ page.next.title }}</span>
       </a>
       {% else %}<div class="flex-1"></div>{% endif %}
     </nav>
@@ -91,30 +143,40 @@ layout: default
   </article>
 
   <!-- Sidebar -->
-  <aside class="lg:w-72 shrink-0">
+  <aside class="lg:w-80 shrink-0 space-y-8">
 
     <!-- Sidebar Ad -->
-    <div class="bg-white rounded-xl shadow-md p-4 mb-6">
-      <p class="text-xs text-gray-400 text-center mb-2">スポンサー</p>
-      <ins class="adsbygoogle block"
-           data-ad-client="ca-pub-6743751614716161"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-brand-50 p-8 transform hover:shadow-lg transition-shadow duration-300" 
+         data-aos="fade-left" data-aos-delay="200">
+      <p class="text-[10px] text-brand-300 font-bold uppercase tracking-[0.2em] text-center mb-6">Advertisement</p>
+      <div class="rounded-xl overflow-hidden">
+        <ins class="adsbygoogle block ad-unit"
+             data-ad-client="ca-pub-6743751614716161"
+             data-ad-slot="auto"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
     </div>
 
     <!-- Recent Posts -->
-    <div class="bg-white rounded-xl shadow-md p-5">
-      <h3 class="font-bold text-rose-700 mb-4 text-sm uppercase tracking-wide">最近の記事</h3>
-      <ul class="space-y-3">
-        {% for post in site.posts limit:5 %}
-        <li>
-          <a href="{{ post.url | relative_url }}"
-             class="text-sm text-gray-700 hover:text-rose-600 transition line-clamp-2 leading-snug">
-            {{ post.title }}
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-brand-50 p-10 sticky top-24 transform hover:shadow-lg transition-shadow duration-300"
+         data-aos="fade-left" data-aos-delay="400">
+      <h3 class="font-bold text-gray-900 mb-8 text-xs uppercase tracking-[0.3em] border-b border-brand-100 pb-4 flex items-center gap-3">
+        <span class="text-brand-500 text-lg animate-pulse">✦</span> Latest Stories
+      </h3>
+      <ul class="space-y-8">
+        {% for post in site.posts limit:6 %}
+        <li class="group">
+          <a href="{{ post.url | relative_url }}" class="block">
+            <span class="text-sm font-bold text-gray-600 group-hover:text-brand-600 transition-colors line-clamp-2 leading-relaxed mb-2">
+              {{ post.title }}
+            </span>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-200 group-hover:bg-brand-400 transition-colors"></span>
+              <time class="text-[10px] text-brand-300 font-medium tracking-widest">{{ post.date | date: "%Y.%m.%d" }}</time>
+            </div>
           </a>
-          <time class="text-xs text-gray-400 mt-0.5 block">{{ post.date | date: "%m月%d日" }}</time>
         </li>
         {% endfor %}
       </ul>

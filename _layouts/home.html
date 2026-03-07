@@ -3,61 +3,111 @@ layout: default
 ---
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-rose-500 to-pink-400 rounded-2xl p-8 mb-10 text-white shadow-lg">
-  <h1 class="font-serif text-4xl md:text-5xl font-bold mb-3">毎日の暮らしを、もっと豊かに</h1>
-  <p class="text-rose-100 text-lg">節約・料理・美容・健康… 女性のリアルな生活に役立つ情報をお届けします</p>
+<section class="bg-white rounded-[2.5rem] p-8 md:p-16 mb-12 shadow-xl shadow-brand-100/50 border border-brand-50 relative overflow-hidden" 
+         data-aos="fade-up" data-aos-duration="1000">
+  <!-- Animated Background Elements -->
+  <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-gradient-to-br from-brand-100 to-brand-50 rounded-full opacity-60 blur-3xl animate-float"></div>
+  <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-48 h-48 bg-gradient-to-tr from-brand-200 to-white rounded-full opacity-40 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+  
+  <div class="relative z-10 text-center">
+    <span class="inline-block py-1 px-3 rounded-full bg-brand-50 text-[10px] font-bold tracking-[0.3em] text-brand-500 uppercase mb-6 border border-brand-100"
+          data-aos="fade-down" data-aos-delay="200">
+      Official Online Magazine
+    </span>
+    <h1 class="font-serif text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-400 leading-tight tracking-tighter italic drop-shadow-sm"
+        data-aos="zoom-in" data-aos-delay="400">
+      Essence of Living
+    </h1>
+    <p class="text-gray-500 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
+       data-aos="fade-up" data-aos-delay="600">
+      毎日の暮らしを、少しだけ丁寧に。<br class="md:hidden">心ときめくヒントをあなたに。
+    </p>
+  </div>
 </section>
 
 <!-- Article Grid -->
 <section>
-  <h2 class="text-2xl font-bold text-rose-700 mb-6 pb-2 border-b-2 border-rose-200">最新記事</h2>
+  <div class="flex items-center justify-between mb-12 border-b border-brand-100 pb-6" data-aos="fade-right">
+    <h2 class="text-xs font-bold text-gray-900 uppercase tracking-[0.4em] flex items-center gap-4">
+      <span class="w-12 h-px bg-brand-500"></span>
+      Latest Stories
+    </h2>
+  </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
     {% for post in paginator.posts %}
-    <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+    <article class="group flex flex-col transform transition-all duration-500 hover:-translate-y-2" 
+             data-aos="fade-up" data-aos-delay="{{ forloop.index | times: 100 }}">
+      
       {% if post.image %}
-      <img src="{{ post.image }}" alt="{{ post.title }}" class="w-full h-48 object-cover">
+      <div class="relative overflow-hidden rounded-[2rem] mb-6 aspect-[4/3] shadow-md group-hover:shadow-2xl group-hover:shadow-brand-200/50 transition-all duration-500 cursor-pointer">
+        <a href="{{ post.url | relative_url }}" class="block w-full h-full">
+          <img src="{{ post.image }}" alt="{{ post.title }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-out">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <!-- Hover Overlay Icon -->
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+            <span class="bg-white/90 backdrop-blur-sm text-brand-600 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </span>
+          </div>
+        </a>
+      </div>
       {% else %}
-      <div class="w-full h-48 bg-gradient-to-br from-rose-100 to-pink-200 flex items-center justify-center">
-        <span class="text-5xl">✨</span>
+      <div class="relative overflow-hidden rounded-[2rem] mb-6 aspect-[4/3] bg-gradient-to-br from-brand-50 to-white border border-brand-50 flex items-center justify-center shadow-md group-hover:shadow-2xl group-hover:shadow-brand-200/50 transition-all duration-500">
+        <span class="text-6xl transform group-hover:scale-125 group-hover:rotate-12 transition-transform duration-700">✨</span>
       </div>
       {% endif %}
-      <div class="p-5 flex flex-col flex-grow">
-        <div class="flex flex-wrap gap-2 mb-3">
-          {% for tag in post.tags limit:2 %}
-          <span class="bg-rose-100 text-rose-600 text-xs font-medium px-2 py-1 rounded-full">{{ tag }}</span>
+
+      <div class="flex flex-col flex-grow px-2">
+        <div class="flex items-center gap-3 mb-4 opacity-80 group-hover:opacity-100 transition-opacity">
+          {% for tag in post.tags limit:1 %}
+          <span class="text-[10px] font-bold text-brand-500 uppercase tracking-widest bg-brand-50 px-2 py-1 rounded-md">{{ tag }}</span>
           {% endfor %}
+          <span class="w-1 h-1 bg-brand-300 rounded-full"></span>
+          <time class="text-[10px] text-gray-400 font-medium tracking-widest">{{ post.date | date: "%Y.%m.%d" }}</time>
         </div>
-        <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-2 leading-snug">
-          <a href="{{ post.url | relative_url }}" class="hover:text-rose-600 transition">{{ post.title }}</a>
-        </h3>
-        <p class="text-gray-500 text-sm line-clamp-3 flex-grow">{{ post.excerpt | strip_html | truncate: 120 }}</p>
-        <div class="flex items-center justify-between mt-4">
-          <time class="text-xs text-gray-400">{{ post.date | date: "%Y年%m月%d日" }}</time>
-          <a href="{{ post.url | relative_url }}" class="text-sm text-rose-500 font-medium hover:text-rose-700 transition">
-            続きを読む →
+        <h3 class="font-serif font-bold text-xl md:text-2xl text-gray-900 mb-4 line-clamp-2 leading-[1.4] group-hover:text-brand-600 transition-colors duration-300">
+          <a href="{{ post.url | relative_url }}">
+            <span class="bg-left-bottom bg-gradient-to-r from-brand-200 to-brand-200 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out pb-1">
+              {{ post.title }}
+            </span>
           </a>
-        </div>
+        </h3>
+        <p class="text-gray-500 text-sm line-clamp-2 leading-relaxed mb-6 group-hover:text-gray-600 transition-colors">{{ post.excerpt | strip_html | truncate: 100 }}</p>
+        
+        <a href="{{ post.url | relative_url }}" class="mt-auto text-[11px] font-bold text-brand-900 uppercase tracking-widest inline-flex items-center gap-2 group/btn">
+          <span class="group-hover/btn:mr-2 transition-all duration-300">Read Story</span>
+          <span class="text-brand-500 text-lg transform group-hover/btn:translate-x-1 transition-transform duration-300">→</span>
+        </a>
       </div>
     </article>
 
     {% comment %}Insert ad after 4th article{% endcomment %}
     {% assign loop_index = forloop.index %}
     {% if loop_index == 4 %}
-    <div class="md:col-span-2">
-      <ins class="adsbygoogle block"
-           data-ad-client="ca-pub-6743751614716161"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <div class="md:col-span-2 py-10" data-aos="fade-up">
+      <div class="bg-white rounded-[2rem] shadow-sm border border-brand-50 p-8 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-50 rounded-full blur-2xl opacity-50"></div>
+        <p class="text-[10px] text-brand-300 font-bold uppercase tracking-[0.2em] text-center mb-6 relative z-10">Advertisement</p>
+        <div class="relative z-10">
+          <ins class="adsbygoogle block ad-unit"
+               data-ad-client="ca-pub-6743751614716161"
+               data-ad-slot="auto"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+      </div>
     </div>
     {% endif %}
 
     {% else %}
-    <div class="md:col-span-2 text-center py-16 text-gray-400">
-      <p class="text-4xl mb-4">📝</p>
-      <p>まだ記事がありません。</p>
+    <div class="md:col-span-2 text-center py-24 text-gray-300" data-aos="fade-up">
+      <p class="text-6xl mb-6 font-serif italic animate-pulse">Coming Soon</p>
+      <p class="text-sm tracking-widest uppercase">新しい記事を準備中です</p>
     </div>
     {% endfor %}
   </div>
@@ -65,15 +115,19 @@ layout: default
 
 <!-- Pagination -->
 {% if paginator.total_pages > 1 %}
-<nav class="flex justify-center gap-2 mt-10">
+<nav class="flex justify-center items-center gap-8 mt-24 border-t border-brand-100 pt-16" data-aos="fade-up">
   {% if paginator.previous_page %}
   <a href="{{ paginator.previous_page_path | relative_url }}"
-     class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition">← 新しい記事</a>
+     class="relative px-6 py-3 rounded-full bg-white border border-brand-100 text-[11px] font-bold text-gray-900 uppercase tracking-widest flex items-center gap-3 hover:shadow-lg hover:border-brand-200 hover:-translate-y-1 transition-all duration-300 group">
+     <span class="text-brand-500 text-lg transition-transform group-hover:-translate-x-1">←</span> Newer
+  </a>
   {% endif %}
-  <span class="px-4 py-2 text-gray-500 text-sm">{{ paginator.page }} / {{ paginator.total_pages }}</span>
+  <span class="text-xs font-medium text-brand-300 tracking-widest uppercase italic font-serif">{{ paginator.page }} / {{ paginator.total_pages }}</span>
   {% if paginator.next_page %}
   <a href="{{ paginator.next_page_path | relative_url }}"
-     class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition">古い記事 →</a>
+     class="relative px-6 py-3 rounded-full bg-white border border-brand-100 text-[11px] font-bold text-gray-900 uppercase tracking-widest flex items-center gap-3 hover:shadow-lg hover:border-brand-200 hover:-translate-y-1 transition-all duration-300 group">
+     Older <span class="text-brand-500 text-lg transition-transform group-hover:translate-x-1">→</span>
+  </a>
   {% endif %}
 </nav>
 {% endif %}
