@@ -57,7 +57,7 @@ def publish(article, title):
 
 
 def main():
-    topics = generate_topics()
+    topics = generate_topics(n=1)
     print(f"Topics generated: {len(topics)}")
 
     for t in topics:
