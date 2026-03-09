@@ -18,6 +18,8 @@ def ask_local_llm(prompt: str, purpose: str = "draft") -> str:
     endpoint = cfg.get("endpoint", "http://localhost:11434").rstrip("/")
     fallback_endpoint = cfg.get("fallback_endpoint", "http://172.25.192.1:11434").rstrip("/")
     timeout = int(cfg.get("timeout", 180))
+    cold_start_timeout = int(cfg.get("cold_start_timeout", max(timeout, 240)))
+    keep_alive = str(cfg.get("keep_alive", "45m"))
     retries = int(cfg.get("retries", 2))
 
     if purpose == "topic":
@@ -29,17 +31,18 @@ def ask_local_llm(prompt: str, purpose: str = "draft") -> str:
     for i in range(retries + 1):
         target = endpoint if i < retries else fallback_endpoint
         try:
+            timeout_eff = cold_start_timeout if i == 0 else timeout
             resp = requests.post(
                 f"{target}/api/generate",
-                json={"model": model, "prompt": prompt, "stream": False},
-                timeout=timeout,
+                json={"model": model, "prompt": prompt, "stream": False, "keep_alive": keep_alive},
+                timeout=timeout_eff,
             )
             # fallback endpoint may not have the same model; try phi3 as last resort
             if resp.status_code >= 400 and model != "phi3:mini" and i == retries:
                 resp = requests.post(
                     f"{target}/api/generate",
-                    json={"model": "phi3:mini", "prompt": prompt, "stream": False},
-                    timeout=timeout,
+                    json={"model": "phi3:mini", "prompt": prompt, "stream": False, "keep_alive": keep_alive},
+                    timeout=timeout_eff,
                 )
             resp.raise_for_status()
             out = (resp.json().get("response") or "").strip()
