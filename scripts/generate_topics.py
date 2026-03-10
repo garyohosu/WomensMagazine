@@ -57,8 +57,12 @@ def generate_topics(n=10):
         '例: ["トピック1", "トピック2"]'
     )
 
-    # 1) local llm first
-    raw = ask_local_llm(prompt, purpose="topic")
+    # 1) local llm first（失敗時は即Codex）
+    try:
+        raw = ask_local_llm(prompt, purpose="topic")
+    except Exception:
+        raw = ask_codex(prompt, timeout=180)
+
     try:
         topics = extract_json_value(raw, list)
         normalized_topics = _normalize_topics(topics, n)

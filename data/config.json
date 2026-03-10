@@ -3,7 +3,7 @@
     "endpoint": "http://192.168.11.2:11434",
     "fallback_endpoint": "http://172.25.192.1:11434",
     "topic_model": "phi3:mini",
-    "draft_model": "qwen2.5:7b",
+    "draft_model": "phi3:mini",
     "timeout": 180,
     "retries": 2
   },
