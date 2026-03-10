@@ -71,4 +71,8 @@ def generate_article(topic):
         "改善後の本文のみ返してください。\n\n"
         f"{draft}"
     )
-    return ask_codex(polish_prompt)
+    try:
+        return ask_codex(polish_prompt, timeout=360)
+    except Exception:
+        # polish失敗時は下書きをそのまま返して全体停止を回避
+        return draft

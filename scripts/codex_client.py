@@ -1,6 +1,8 @@
 """Codex CLI wrapper (flat-rate OAuth session, no API key)."""
 import json
+import os
 import subprocess
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -18,19 +20,36 @@ def _load_timeout(default: int = 600) -> int:
 
 
 def ask_codex(prompt: str, timeout: int = None) -> str:
-    timeout = timeout or _load_timeout(600)
-    result = subprocess.run(
-        ["codex", "exec", prompt],
-        timeout=timeout,
-        capture_output=True,
-        text=True,
-    )
-    if result.returncode != 0:
-        raise RuntimeError(
-            "Codex CLI failed. Check `codex` login/session.\n"
-            f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+    timeout = timeout or _load_timeout(420)
+    output_file = None
+    try:
+        with tempfile.NamedTemporaryFile(prefix="wm_codex_", suffix=".txt", delete=False) as tf:
+            output_file = tf.name
+
+        result = subprocess.run(
+            ["codex", "exec", "--output-last-message", output_file, "-"],
+            input=prompt,
+            timeout=timeout,
+            capture_output=True,
+            text=True,
         )
-    out = (result.stdout or "").strip()
-    if not out:
-        raise RuntimeError("Codex CLI returned empty output")
-    return out
+        if result.returncode != 0:
+            raise RuntimeError(
+                "Codex CLI failed. Check `codex` login/session.\n"
+                f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+            )
+
+        out = ""
+        if output_file and os.path.exists(output_file):
+            out = Path(output_file).read_text(encoding="utf-8").strip()
+        if not out:
+            out = (result.stdout or "").strip()
+        if not out:
+            raise RuntimeError("Codex CLI returned empty output")
+        return out
+    finally:
+        if output_file and os.path.exists(output_file):
+            try:
+                os.remove(output_file)
+            except Exception:
+                pass

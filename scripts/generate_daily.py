@@ -1,5 +1,6 @@
 import os
 import re
+import time
 from datetime import date
 
 from generate_topics import generate_topics
@@ -72,35 +73,63 @@ def publish(article, title):
     print(f"Published: {path}")
 
 
+def _log(msg: str) -> None:
+    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {msg}", flush=True)
+
+
 def main():
+    t0 = time.time()
+    _log("START generate_daily")
+
+    _log("STEP topics: generate_topics")
     topics = generate_topics(n=1)
-    print(f"Topics generated: {len(topics)}")
+    _log(f"STEP topics: done ({len(topics)} topics)")
 
     for t in topics:
-        print(f"\n=== Generating: {t} ===")
+        _log(f"=== Generating: {t} ===")
         try:
+            s = time.time()
+            _log("STEP article: generate_article")
             article = generate_article(t)
+            _log(f"STEP article: done ({time.time() - s:.1f}s)")
 
+            s = time.time()
+            _log("STEP image: generate_image")
             image_url = generate_image(t)
-            article = insert_image_into_article(article, image_url)
+            _log(f"STEP image: done ({time.time() - s:.1f}s)")
 
+            article = insert_image_into_article(article, image_url)
+            _log("STEP image: inserted into article")
+
+            s = time.time()
+            _log("STEP fact_check")
             article = fact_check(article)
+            _log(f"STEP fact_check: done ({time.time() - s:.1f}s)")
 
             retry = 0
             while retry < 3:
+                s = time.time()
+                _log(f"STEP review: attempt {retry + 1}")
                 score, feedback = review(article)
-                print(f"Score: {score} | Feedback: {feedback}")
+                _log(f"STEP review: done score={score} ({time.time() - s:.1f}s)")
 
                 if score >= 80:
                     break
 
-                print(f"Revising (attempt {retry + 1})...")
+                _log(f"STEP revise: attempt {retry + 1}")
+                s = time.time()
                 article = revise(article, feedback)
+                _log(f"STEP revise: done ({time.time() - s:.1f}s)")
                 retry += 1
 
+            s = time.time()
+            _log("STEP publish")
             publish(article, t)
+            _log(f"STEP publish: done ({time.time() - s:.1f}s)")
         except Exception as exc:
-            print(f"Failed to generate topic '{t}': {exc}")
+            _log(f"ERROR topic '{t}': {exc}")
+
+    _log(f"END generate_daily ({time.time() - t0:.1f}s)")
 
 
 if __name__ == "__main__":
