@@ -13,6 +13,19 @@ POSTS_DIR = os.path.join(os.path.dirname(__file__), "..", "_posts")
 INVALID_FILENAME_CHARS = set('<>:"/\\|?*')
 
 
+def sanitize_secret_like_text(article: str) -> str:
+    """Redact secret-like strings before writing public markdown."""
+    replacements = [
+        (r"OPENAI_API_KEY\s*[:=]\s*\S+", "OPENAI_API_KEY=<REDACTED>"),
+        (r"sk-[A-Za-z0-9]{20,}", "<REDACTED_OPENAI_KEY>"),
+        (r"ghp_[A-Za-z0-9]{36}", "<REDACTED_GITHUB_TOKEN>"),
+    ]
+    redacted = article
+    for pattern, repl in replacements:
+        redacted = re.sub(pattern, repl, redacted, flags=re.IGNORECASE)
+    return redacted
+
+
 def slugify_title(title: str) -> str:
     """Create a filesystem-safe filename fragment from a topic title."""
     normalized = title.replace(" ", "_").replace("　", "_")
@@ -51,8 +64,11 @@ def build_post_path(title: str) -> str:
 def publish(article, title):
     os.makedirs(POSTS_DIR, exist_ok=True)
     path = build_post_path(title)
+    sanitized = sanitize_secret_like_text(article)
+    if sanitized != article:
+        print("Secret-like text detected and redacted before publish")
     with open(path, "w", encoding="utf-8") as f:
-        f.write(article)
+        f.write(sanitized)
     print(f"Published: {path}")
 
 
