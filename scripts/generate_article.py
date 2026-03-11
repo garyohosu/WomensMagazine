@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime, timezone, timedelta
 from codex_client import ask_codex
 from local_llm_client import ask_local_llm
 
@@ -15,7 +15,8 @@ def yaml_double_quote(value: str) -> str:
 
 
 def generate_article(topic):
-    today = date.today().isoformat()
+    jst = timezone(timedelta(hours=9))
+    today = datetime.now(jst).strftime("%Y-%m-%d %H:%M:%S %z")
     safe_topic = yaml_double_quote(topic)
 
     prompt = (

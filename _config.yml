@@ -3,6 +3,7 @@ description: 毎日の暮らしをもっと豊かに。節約・料理・美容�
 url: "https://garyohosu.github.io"
 baseurl: "/WomensMagazine"
 amazon_tracking_id: "junknewsgar02-22"
+timezone: Asia/Tokyo
 
 # Pagination
 plugins:
