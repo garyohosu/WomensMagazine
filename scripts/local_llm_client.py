@@ -1,7 +1,11 @@
 import json
 import time
 from pathlib import Path
-import requests
+
+try:
+    import requests
+except ModuleNotFoundError:
+    requests = None
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -14,6 +18,11 @@ def load_config() -> dict:
 
 
 def ask_local_llm(prompt: str, purpose: str = "draft") -> str:
+    if requests is None:
+        raise RuntimeError(
+            "local llm support requires the 'requests' package; use Codex fallback or install requirements.txt"
+        )
+
     cfg = load_config().get("local_llm", {})
     endpoint = cfg.get("endpoint", "http://localhost:11434").rstrip("/")
     fallback_endpoint = cfg.get("fallback_endpoint", "http://172.25.192.1:11434").rstrip("/")

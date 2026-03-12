@@ -21,6 +21,11 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -39,10 +44,21 @@ jobs:
       #   1. ローカルで `codex auth` を実行してログイン
       #   2. `cat ~/.codex/auth.json` の内容をコピー
       #   3. GitHub リポジトリの Settings > Secrets > CODEX_AUTH_TOKEN に貼り付け
+      - name: Validate Codex auth secret
+        env:
+          CODEX_AUTH_TOKEN: ${{ secrets.CODEX_AUTH_TOKEN }}
+        run: |
+          if [ -z "$CODEX_AUTH_TOKEN" ]; then
+            echo "CODEX_AUTH_TOKEN secret is not configured."
+            exit 1
+          fi
+
       - name: Restore Codex auth (ChatGPT Plus)
+        env:
+          CODEX_AUTH_TOKEN: ${{ secrets.CODEX_AUTH_TOKEN }}
         run: |
           mkdir -p ~/.codex
-          echo '${{ secrets.CODEX_AUTH_TOKEN }}' > ~/.codex/auth.json
+          printf '%s' "$CODEX_AUTH_TOKEN" > ~/.codex/auth.json
 
       - name: Generate articles
         run: |
