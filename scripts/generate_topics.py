@@ -5,6 +5,16 @@ from codex_client import ask_codex
 from json_utils import extract_json_value
 
 
+def _fallback_topics(n: int):
+    today = date.today().strftime("%Y年%m月%d日")
+    base = [
+        f"{today}版：春の暮らしを軽くする5分習慣",
+        f"{today}版：食費と時短を両立する1週間メニュー",
+        f"{today}版：花粉シーズンのゆらぎ肌対策7ルール",
+    ]
+    return base[: max(1, n)]
+
+
 def _normalize_topics(cands, n):
     out = []
     seen = set()
@@ -99,7 +109,10 @@ def generate_topics(n=10):
     except Exception:
         pass
 
-    return normalized_topics[:n]
+    result = normalized_topics[:n]
+    if not result:
+        return _fallback_topics(n)
+    return result
 
 
 if __name__ == "__main__":

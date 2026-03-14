@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import time
 from datetime import date
 
@@ -84,6 +85,9 @@ def main():
     _log("STEP topics: generate_topics")
     topics = generate_topics(n=1)
     _log(f"STEP topics: done ({len(topics)} topics)")
+    if not topics:
+        _log("ERROR: no topics generated")
+        sys.exit(1)
 
     for t in topics:
         _log(f"=== Generating: {t} ===")
