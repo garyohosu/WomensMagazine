@@ -1,9 +1,13 @@
-"""Codex CLI wrapper (flat-rate OAuth session, no API key)."""
+"""Codex CLI wrapper (flat-rate OAuth session, no API key).
+Falls back to local LLM when Codex is unavailable.
+"""
 import json
 import os
 import subprocess
 import tempfile
 from pathlib import Path
+
+from local_llm_client import ask_local_llm
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -34,10 +38,7 @@ def ask_codex(prompt: str, timeout: int = None) -> str:
             text=True,
         )
         if result.returncode != 0:
-            raise RuntimeError(
-                "Codex CLI failed. Check `codex` login/session.\n"
-                f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-            )
+            return ask_local_llm(prompt, purpose="draft")
 
         out = ""
         if output_file and os.path.exists(output_file):
@@ -45,7 +46,7 @@ def ask_codex(prompt: str, timeout: int = None) -> str:
         if not out:
             out = (result.stdout or "").strip()
         if not out:
-            raise RuntimeError("Codex CLI returned empty output")
+            return ask_local_llm(prompt, purpose="draft")
         return out
     finally:
         if output_file and os.path.exists(output_file):
