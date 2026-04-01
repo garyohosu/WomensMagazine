@@ -67,11 +67,16 @@ def generate_topics(n=10):
         '例: ["トピック1", "トピック2"]'
     )
 
-    # 1) local llm first（失敗時は即Codex）
+    # 1) local llm first（失敗時は即Codex、両方失敗時は静的フォールバック）
     try:
         raw = ask_local_llm(prompt, purpose="topic")
     except Exception:
-        raw = ask_codex(prompt, timeout=180)
+        try:
+            raw = ask_codex(prompt, timeout=180)
+        except Exception as e:
+            import sys
+            print(f"[generate_topics] both local_llm and codex failed: {e}", file=sys.stderr)
+            return _fallback_topics(n)
 
     try:
         topics = extract_json_value(raw, list)

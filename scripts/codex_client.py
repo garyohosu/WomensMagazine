@@ -38,6 +38,8 @@ def ask_codex(prompt: str, timeout: int = None) -> str:
             text=True,
         )
         if result.returncode != 0:
+            import sys
+            print(f"[codex] exec failed rc={result.returncode} stderr={result.stderr[:300]!r}", file=sys.stderr)
             return ask_local_llm(prompt, purpose="draft")
 
         out = ""
