@@ -18,6 +18,9 @@ def load_config() -> dict:
 
 
 def ask_local_llm(prompt: str, purpose: str = "draft") -> str:
+    import os
+    if os.getenv("GITHUB_ACTIONS"):
+        raise RuntimeError("local llm skipped in GitHub Actions environment")
     if requests is None:
         raise RuntimeError(
             "local llm support requires the 'requests' package; use Codex fallback or install requirements.txt"
