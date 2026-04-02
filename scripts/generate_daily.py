@@ -89,6 +89,7 @@ def main():
         _log("ERROR: no topics generated")
         sys.exit(1)
 
+    published_count = 0
     for t in topics:
         _log(f"=== Generating: {t} ===")
         try:
@@ -130,10 +131,14 @@ def main():
             _log("STEP publish")
             publish(article, t)
             _log(f"STEP publish: done ({time.time() - s:.1f}s)")
+            published_count += 1
         except Exception as exc:
             _log(f"ERROR topic '{t}': {exc}")
 
     _log(f"END generate_daily ({time.time() - t0:.1f}s)")
+    if published_count == 0:
+        _log("ERROR: no articles published (generation failed for all topics)")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
