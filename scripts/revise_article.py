@@ -10,4 +10,7 @@ def revise(article, feedback):
         f"【記事】\n{article}"
     )
 
-    return ask_codex(prompt)
+    try:
+        return ask_codex(prompt)
+    except Exception:
+        return article

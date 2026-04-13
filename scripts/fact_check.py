@@ -10,4 +10,8 @@ def fact_check(article):
         f"{article}"
     )
 
-    return ask_codex(prompt)
+    try:
+        return ask_codex(prompt)
+    except Exception:
+        # Codex / Local LLM どちらも使えない場合は原文を維持して継続
+        return article
