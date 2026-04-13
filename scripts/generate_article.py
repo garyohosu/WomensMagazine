@@ -3,6 +3,35 @@ from codex_client import ask_codex
 from local_llm_client import ask_local_llm
 
 
+def _fallback_article(topic: str, today: str, safe_topic: str) -> str:
+    return (
+        "---\n"
+        f"title: {safe_topic}\n"
+        f"date: {today}\n"
+        "categories: lifestyle\n"
+        "tags: [生活, 女性, おすすめ]\n"
+        f"amazon_keyword: {safe_topic}\n"
+        "amazon_product_url: \"\"\n"
+        "amazon_image_url: \"\"\n"
+        "layout: post\n"
+        "---\n\n"
+        f"{topic}は、忙しい毎日でも取り入れやすい工夫を積み重ねることで体感が変わります。\n\n"
+        "## まず押さえたい基本\n\n"
+        "最初から完璧を目指すより、5分でできる小さな習慣を続けるほうが効果的です。\n"
+        "朝・昼・夜のどこに入れるかを決めると継続しやすくなります。\n\n"
+        "## よくある失敗と対策\n\n"
+        "情報を集めすぎて実行が止まるケースが多いです。\n"
+        "『今日1つだけ試す』と決めて、翌日に振り返る流れを作ると失敗が減ります。\n\n"
+        "## 今日からできるアクション\n\n"
+        "- タイマーを5分に設定して着手する\n"
+        "- 終わったら1行メモを残す\n"
+        "- 週末にメモを見返して改善点を1つ決める\n\n"
+        "## まとめ\n\n"
+        "小さく始めて、続けながら整える。これが一番の近道です。\n"
+        "完璧さより、今日の一歩を優先して進めていきましょう。\n"
+    )
+
+
 def yaml_double_quote(value: str) -> str:
     """Return a YAML-safe double-quoted scalar."""
     escaped = (
@@ -52,12 +81,14 @@ def generate_article(topic):
         "front matterの直後から記事本文をMarkdown形式で書いてください。"
     )
 
-    # 1) Local LLM generates a rich draft quickly (with retry/fallback in client)
+    # 1) Local LLM draft -> Codex fallback -> deterministic fallback
     try:
         draft = ask_local_llm(prompt, purpose="draft")
     except Exception:
-        # fallback: Codex only path (still flat-rate)
-        draft = ask_codex(prompt)
+        try:
+            draft = ask_codex(prompt)
+        except Exception:
+            return _fallback_article(topic, today, safe_topic)
 
     # 2) Codex CLI polishes structure/facts/tone for publish quality
     polish_prompt = (
