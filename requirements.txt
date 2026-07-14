@@ -1,3 +1,6 @@
-requests>=2.31.0
+requests>=2.32.5,<3
+urllib3>=2.2.3,<3
+pyOpenSSL>=24.2.1,<27
+cryptography>=43,<50
 # AI generation uses Codex CLI (flat-rate OAuth) + Local LLM (Ollama)
 # Requires: Node.js + codex login + Ollama endpoint
