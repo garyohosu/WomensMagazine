@@ -4,7 +4,7 @@ from pathlib import Path
 
 try:
     import requests
-except ModuleNotFoundError:
+except Exception:
     requests = None
 
 ROOT = Path(__file__).resolve().parent.parent

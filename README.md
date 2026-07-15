@@ -37,6 +37,9 @@ if ($LASTEXITCODE -ne 0) {
 }
 ```
 
+Linux / OpenClaw 側で動かすなら、user site-packages の混線を避けるため
+`PYTHONNOUSERSITE=1 python3 scripts/generate_daily.py` を使う。
+
 ### 3. OpenClaw の cron に登録
 OpenClaw 側の cron ジョブで、上記 PowerShell コマンドを毎日1回実行する設定にする。
 

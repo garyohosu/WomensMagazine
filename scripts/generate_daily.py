@@ -4,15 +4,19 @@ import sys
 import time
 from datetime import date
 
-from generate_topics import generate_topics
-from generate_article import generate_article
-from generate_image import generate_image, insert_image_into_article
-from fact_check import fact_check
-from review_article import review
-from revise_article import revise
-
 POSTS_DIR = os.path.join(os.path.dirname(__file__), "..", "_posts")
 INVALID_FILENAME_CHARS = set('<>:"/\\|?*')
+
+
+def _ensure_isolated_python() -> None:
+    """Avoid broken user site-packages leaking into system Python runs."""
+    if os.environ.get("PYTHONNOUSERSITE") == "1":
+        return
+    os.execve(
+        sys.executable,
+        [sys.executable, *sys.argv],
+        {**os.environ, "PYTHONNOUSERSITE": "1"},
+    )
 
 
 def sanitize_secret_like_text(article: str) -> str:
@@ -79,6 +83,14 @@ def _log(msg: str) -> None:
 
 
 def main():
+    _ensure_isolated_python()
+    from generate_topics import generate_topics
+    from generate_article import generate_article
+    from generate_image import generate_image, insert_image_into_article
+    from fact_check import fact_check
+    from review_article import review
+    from revise_article import revise
+
     t0 = time.time()
     _log("START generate_daily")
 
